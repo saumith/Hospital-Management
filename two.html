@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EMI Calculator</title>
+</head>
+<body>
+	<h1>EMI Calculator</h1>
+	<form method="post" action="">
+		<label>Name:</label>
+		<input type="text" name="name" required><br><br>
+		<label>Salary:</label>
+		<input type="number" name="salary" required><br><br>
+		<label>Loan Amount:</label>
+		<input type="number" name="loanAmount" required><br><br>
+		<label>Rate of Interest:</label>
+		<input type="number" name="interestRate" required><br><br>
+		<label>Number of Years:</label>
+		<input type="number" name="numYears" required><br><br>
+		<input type="submit" value="Calculate EMI">
+	</form>
+	<br><br>
+	<?php
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+			$name = $_POST['name'];
+			$salary = $_POST['salary'];
+			$loanAmount = $_POST['loanAmount'];
+			$interestRate = $_POST['interestRate'];
+			$numYears = $_POST['numYears'];
+
+			// Validate the input fields
+			if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
+				echo "Invalid name format. Please enter a valid name.<br>";
+			} elseif ($salary < 0 || $loanAmount < 0 || $interestRate < 0 || $numYears < 0) {
+				echo "Please enter positive numbers for salary, loan amount, rate of interest, and number of years.<br>";
+			} else {
+				// Calculate the EMI
+				$ratePerMonth = $interestRate / (12 * 100);
+				$numMonths = $numYears * 12;
+				$emi = ($loanAmount * $ratePerMonth * pow(1 + $ratePerMonth, $numMonths)) / (pow(1 + $ratePerMonth, $numMonths) - 1);
+
+				// Check if the user can afford the EMI
+				if ($emi > ($salary * 0.5)) {
+					echo "Sorry, you cannot afford the EMI. Please choose a lower loan amount or longer repayment period.<br>";
+				} else {
+					echo "Hi $name, your monthly EMI is Rs. " . round($emi) . ".<br>";
+				}
+			}
+		}
+	?>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpage to get and display profile Info</title>
+</head>
+<body>
+ <form action="test.php" method="post" onsubmit="return validate();">
+ <label for="username">Enter your Name</label> 
+ <input type="text" required name="username" id="username">
+ <label for="output" id="msg"></label><br>
+ <label for="phone">Enter the Phone Number</label>
+ <input type="text" required name="phone" id="phone">
+ <label for="output1" id="msg1"></label> 
+ <br>
+ <input type="submit" value="Submit" name="submit">
+
+ <script>
+    function validate()
+    {
+           const username = document.getElementById("username").value;
+           const phone = document.getElementById("phone").value;
+           
+            const pattern = /^[a-zA-Z][a-zA-Z0-9]{7}$/
+             if(!username.match(pattern))
+             {
+               document.getElementById("msg").innerHTML="Invalid username";
+               return false;
+             }
+
+           const pattern1 = /[0-9]{10}$/
+           if(!phone.match(pattern1))
+           {
+            document.getElementById("msg1").innerHTML="Invalid Phone Number";
+            return false;
+           }
+           return true;
+    }          
+</script>
+</form>
+</body>
+</html>
+<?php
+   if (isset($_POST['submit']))
+   {
+    $username= $_POST["username"];
+    $phone= $_POST["phone"];
+    echo "Your name is ".$username ." and phone number is " .$phone;
+   } 
+?>
